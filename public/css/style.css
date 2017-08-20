@@ -30,3 +30,8 @@ footer {
     border-radius: 5px;
     border: solid  #e9eef0;
 }
+.imgStyle{
+    width: 70%;
+    height: 70%;
+    border-radius: 10px;
+}

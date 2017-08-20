@@ -21,7 +21,7 @@ class GalleriesController extends Controller
      */
     public function index()
     {
-        $galleries = Galleries::orderBy('time', 'DESC')->paginate(5);
+        $galleries = Galleries::orderBy('time','DESC')->paginate(5);
 
         if (Auth::check()) {
             return view('admin.index' ,compact('galleries'));

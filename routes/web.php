@@ -16,7 +16,7 @@
 });*/
 
 
-Route::get('/', 'GalleriesController@index');
+Route::get('/','NewsController@index');
 Route::get('/home', 'GalleriesController@index');
 Route::get('/galleries', 'GalleriesController@index')->name('home');
 Route::get('/galleries/{alias}', 'GalleriesController@show');
