@@ -16,6 +16,8 @@ html {
 body {
     margin-bottom: 10vh;
     padding-bottom: 5%;
+    background-image: url(/lou901.jpeg);
+    min-height: 1200px;
 }
 footer {
     position: absolute;
@@ -29,7 +31,10 @@ footer {
 .navMenuAdm{
     border-radius: 5px;
     border: solid  #e9eef0;
+    margin: 5px 0 0 5px;
+    background-color: white;
 }
+
 .imgStyle{
     width: 70%;
     height: 70%;

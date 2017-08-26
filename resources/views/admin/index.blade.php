@@ -1,9 +1,6 @@
 @extends('layout_parts.layout')
 
 @section('content')
-    <style>
-
-    </style>
     <div class="content container-fluid">
         <div class="row">
             <div class="col-md-3" >
@@ -15,14 +12,12 @@
                     </div>
                 </div>
                 <ul class="nav">
-                    <li>
-                        <a class="navMenuAdm" href="/admin/create">Создать галерею</a>
-                    </li>
-                    <li class="navMenuAdm"><a href="">Пусто</a></li>
+                    <li class="navMenuAdm"><a href="/admin/create">Создать галерею</a></li>
+                    <li class="navMenuAdm"><a href="/news/create">Добавить новость</a></li>
+                    <li class="navMenuAdm"><a href="/">Редактировать новости</a></li>
+                    <li class="navMenuAdm"><a href="#">Главная</a></li>
+                    <li class="navMenuAdm"><a href="#">Настройки</a></li>
                     <li class="navMenuAdm"><a href="#">Написать автору</a></li>
-                    <li  class="navMenuAdm"><a href="#">Главная</a></li>
-                    <li  class="navMenuAdm"><a href="#">Настройки</a></li>
-                    <li  class="navMenuAdm"><a href="#">Написать автору</a></li>
 
                 </ul>
             </div>

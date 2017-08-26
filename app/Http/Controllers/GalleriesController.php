@@ -82,7 +82,9 @@ class GalleriesController extends Controller
             'time' => request('time'),
         ]);
         $galleries_ids = Galleries::select('id')->orderBy('id', 'max')->limit(1)->get();
+
         session()->flash('message', 'Альбом успешно создан!загрузите фото!');
+        
         return view('images.create', compact('galleries_ids'));
     }
 

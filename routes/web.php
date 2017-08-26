@@ -17,13 +17,15 @@
 
 
 Route::get('/','NewsController@index');
-Route::get('/home', 'GalleriesController@index');
-Route::get('/galleries', 'GalleriesController@index')->name('home');
-Route::get('/galleries/{alias}', 'GalleriesController@show');
+Route::post('/news','NewsController@store');
+Route::get('/news/create','NewsController@create');
+Route::get('/news/{alias}','NewsController@show');
+Route::get('/news/{id}/edit','NewsController@edit');
+Route::PUT('/news/{id}','NewsController@update');
+Route::DELETE('/news/{id}','NewsController@destroy');
 
 
 Route::get('/admin','GalleriesController@index');
-
 Route::get('/admin/create','GalleriesController@create');
 Route::post('/admin/store','GalleriesController@store');
 Route::get('/admin/edit/{id}','GalleriesController@edit');
@@ -36,6 +38,11 @@ Route::post('/admin/imageStore','ImagesController@store');
 Route::get('/admin/show','ImagesController@show');
 Route::post('/admin/update','ImagesController@update');
 Route::DELETE('/admin/images/{id}','ImagesController@destroy');
+
+
+Route::get('/home', 'GalleriesController@index');
+Route::get('/galleries', 'GalleriesController@index')->name('home');
+Route::get('/galleries/{alias}', 'GalleriesController@show');
 
 
 Route::get('/login','SessionController@create');
