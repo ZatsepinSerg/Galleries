@@ -46,11 +46,11 @@
                                                 <p>
                                                     {{$new->body}}
                                                 </p>
-                                                <form action="/news/{{$new->alias}}/edit" method="GET">
+                                                <form action="/news/{{$new->id}}/edit" method="GET">
                                                     {{csrf_field()}}
-                                                    <button type="submit" class="btn btn-primary">Редактировать</button>
+                                                    <button type="submit"  class="btn btn-primary">Редактировать</button>
                                                 </form>
-                                                <form action="/news/{{$new->alias}}" method="POST">
+                                                <form action="/news/{{$new->id}}" method="POST">
                                                     {{csrf_field()}}
                                                     {{method_field('DELETE')}}
                                                     <button type="submit" class="btn btn-danger">Удалить</button>

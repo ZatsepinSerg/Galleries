@@ -47,10 +47,9 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $time = time();
-        //проверить реквест
         $this->validate(
             $request,[
-                'title' =>'required|min:10|max:200',
+                'title' =>'required|min:5|max:150',
                 'body' => 'required|min:20',
                 'alias' => 'required|min:5',
                 'file' =>'mimes:jpeg,bmp,png'
@@ -72,16 +71,66 @@ class NewsController extends Controller
 
     public function edit($id)
     {
-      dd('edit');
+        $newsEdit = News::where('id','=',$id)->first();
+
+        return view('admin.news.edit',compact('newsEdit'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request ,$id)
     {
-        dd('update');
+        $this->Validate($request, [
+            'title' => 'required|min:5|max:150',
+            'body' => 'required|min:20',
+            'alias' => 'required|min:5',
+            'file' => 'mimes:jpeg,bmp,png'
+        ]);
+
+        if (!empty($request->file('file'))) {
+            $time = time();
+
+            $oldImageWay = News::where('id', $id)->pluck('img_way')->first();
+            Storage::delete($oldImageWay);
+
+            $imgWay = "/images/news/".$time. "-".$request->file('file')->getClientOriginalName();
+            $request->file('file')->move(public_path().'/images/news/', $time."-".$request->file('file')->getClientOriginalName());
+
+            $answer = News::where('id', '=', $id)->update([
+                'title' => $request->title,
+                'body' => $request->body,
+                'alias' => $request->alias,
+                'img_way' => $imgWay
+            ]);
+        } else {
+            $answer = News::where('id', '=', $id)->update([
+                'title' => $request->title,
+                'body' => $request->body,
+                'alias' => $request->alias,
+            ]);
+        }
+
+        if ($answer) {
+            session()->flash('message', 'Запсь успешно обновлена!');
+        } else {
+            session()->flash('message', 'Ошибка,запись не обновлена!');
+        }
+
+        return redirect()->back();
     }
 
     public function destroy($id)
     {
-        dd('destroy');
+        $imgWay = News::where('id', $id)->pluck('img_way')->first();
+
+        Storage::delete($imgWay);
+
+        $answer = News::where('id', '=', $id)->delete();
+
+        if ($answer) {
+            session()->flash('message', 'Новость удалена!');
+        } else {
+            session()->flash('message', 'Упссс,что-то пошла не так!');
+        }
+
+        return redirect()->back();
     }
 }

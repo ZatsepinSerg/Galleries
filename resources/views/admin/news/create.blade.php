@@ -2,7 +2,7 @@
 @section('content')
     <div class="content container-fluid">
         <div class="row">
-            <div class="col-md-3" >
+
                 <div class="col-md-3" >
                     <div class="panel panel-success">
                         <div class="panel-heading">
@@ -23,7 +23,7 @@
 
                     </ul>
                 </div>
-            </div>
+
             <div class="col-md-9">
                 <div class="col-md-7">
                 <form method="POST" action="/news" enctype='multipart/form-data'>
