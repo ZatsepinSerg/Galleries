@@ -63,7 +63,7 @@
                         </div>
                     @endforeach
                     <div class="col-md-10">
-                        <div class="col-sm-offset-6 ">
+                        <div class="col-sm-offset-6">
                             {{$news->render()}}
                         </div>
                     </div>

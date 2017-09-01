@@ -16,12 +16,77 @@
     <link href="https://fonts.googleapis.com/css?family=Alex+Brush" rel="stylesheet">
     <!-- Latest compiled and minified JavaScript -->
     <script src="/js/jquery-1.js"></script>
-    <script src="/js/bootstrap.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/js/ga.js"></script>
     <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    {{--<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>--}}
 
 </head>
 <body>
+
+<script>
+    $(document).ready(function() {
+        $('#show-form').click(function () {
+            $('.my-form').removeClass('hide');
+            $('.applications').hide();
+            $( "#name" ).focus();
+        });
+        $('#cancel').click(function () {
+            $('.my-form').addClass('hide');
+            $('.applications').show();
+        });
+    });
+
+
+    $(document).ready(function(){
+        $("#callMasters").submit(function() { //устанавливаем событие отправки для формы с id=form
+
+            var  date = $(this).serialize();
+
+            $.ajax({
+                type: 'post',
+                url: '/application',
+                data: date,
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(){
+                    alert('error');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+<div class="preloader">Загружаю...</div>
+<div class="application">
+    <form class="my-form hide" method="post"  id="callMasters" >
+        <div class="row">
+            {{csrf_field()}}
+            {{method_field('POST')}}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name">Введите имя:</label>
+                    <input id="name" name="userName" type="text" placeholder="Введите имя" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="userTelephon">Номер телефона</label>
+                    <input name="userTelephon" id="telephon" type="text" placeholder="номер телефона" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <input class="btn btn-success" type="submit" id="send" value="отправить">
+        <input class="btn btn-warning" type="reset" id="cancel" value="отмена">
+    </form>
+    <div class="" id="show-form">
+    <img class="applications" src="/obrat.jpg">
+    </div>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         @include('layout_parts.navBar')

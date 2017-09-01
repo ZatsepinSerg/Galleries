@@ -51,3 +51,6 @@ Route::get('/register','RegistrationController@create');
 Route::post('/register','RegistrationController@store');
 Route::get('/logout','SessionController@destroy');
 
+//контроллер вызова мастера 
+Route::post('/application','CallController@store');
+

@@ -40,3 +40,20 @@ footer {
     height: 70%;
     border-radius: 10px;
 }
+
+.application{
+    position: fixed;
+    z-index: 100;
+
+}
+
+.applications{
+    position: fixed;
+    border-radius: 100%;
+    height: 100px;
+    width: 100px;
+    z-index: 100;
+    margin: 40% 0 0 0 ;
+}
+
+
