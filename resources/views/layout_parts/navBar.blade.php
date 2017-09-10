@@ -36,7 +36,7 @@
                         @endif
                     </ul>
                 </div>
-            </nav>
+
             </nav>
         </div>
     </div>

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CallMasterClass;
+use App\RequestCallback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
 
 class CallController extends Controller
 {
@@ -13,7 +17,9 @@ class CallController extends Controller
      */
     public function index()
     {
-        //
+        $showClientsRequest = RequestCallback::orderBy('status','ASC')->paginate(20);
+        
+        return view('admin.request_client.index',compact('showClientsRequest'));
     }
 
     /**
@@ -36,12 +42,28 @@ class CallController extends Controller
     {
         $this->validate($request,[
             'userName'=>'required|min:3',
-            'userTelephon'=>'required|min:10|max:15'
-          /*  'textMess'=>'required|min:30'*/
+            'userTelephon'=>'required|min:10|max:15',
+            'userEmail'=>'required',
+            'messageText'=>'required|min:30'
         ]);
 
+        //---------сохранение в БД запроса от пользователя
 
-       return $request->userName."----".$request->userTelephon;
+        $requestCallback = new RequestCallback();
+        $requestCallback->name_clients = $request->userName;
+        $requestCallback->telephon = $request->userTelephon;
+        $requestCallback->email = $request->userEmail;
+        $requestCallback->message = $request->messageText;
+        $requestCallback->save();
+
+        //после успеха отправляем  сообщение
+
+        Mail::to($request->userEmail)
+            ->send(new CallMasterClass($request->userName, $request->userTelephon, $request->messageText));//отправка заказчику
+
+        //Mail::to('zatsepin@accbox.info')->send(new CallMasterClass($name, $userTelephon, $messageText));//отправка админу
+
+        return $request->userName . "----" . $request->userTelephon;
     }
 
     /**
@@ -52,7 +74,9 @@ class CallController extends Controller
      */
     public function show($id)
     {
-        //
+        $clientRequest =  RequestCallback::find($id);
+
+        return view('admin.request_client.show',compact('clientRequest'));
     }
 
     /**
@@ -87,5 +111,16 @@ class CallController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function newMessage(){
+
+//        $this->validate($request,[
+//            'action' =>$request->action
+//        ]);
+
+         $countNewMessage = RequestCallback::where('status','=','0')->count();
+
+        return $countNewMessage;
     }
 }

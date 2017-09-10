@@ -15,7 +15,7 @@
     return view('welcome');
 });*/
 
-
+//-------------CRUD and REST----------------
 Route::get('/','NewsController@index');
 Route::post('/news','NewsController@store');
 Route::get('/news/create','NewsController@create');
@@ -24,6 +24,13 @@ Route::get('/news/{id}/edit','NewsController@edit');
 Route::PUT('/news/{id}','NewsController@update');
 Route::DELETE('/news/{id}','NewsController@destroy');
 
+Route::get('/admin/request-clients','CallController@index');
+Route::get('/admin/request-clients/{id}','CallController@show');
+Route::get('/admin/request-clients/{id}/edit','CallController@edit');
+Route::PUT('/admin/request-clients/{id}','CallController@update');
+Route::DELETE('/admin/request-clients','CallController@destroy');
+
+//-------------------------------------------------------------
 
 Route::get('/admin','GalleriesController@index');
 Route::get('/admin/create','GalleriesController@create');
@@ -53,4 +60,7 @@ Route::get('/logout','SessionController@destroy');
 
 //контроллер вызова мастера 
 Route::post('/application','CallController@store');
+Route::get('/admin/count-new-message','CallController@newMessage');
+
+
 

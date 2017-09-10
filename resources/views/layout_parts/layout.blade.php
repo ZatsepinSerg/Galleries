@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
@@ -48,7 +48,10 @@
                 url: '/application',
                 data: date,
                 success: function(response) {
-                    alert(response);
+                    //alert(response);
+
+                    $('.my-form').addClass('hide');
+                    $('.applications').show();
                 },
                 error: function(){
                     alert('error');
@@ -60,27 +63,39 @@
 </script>
 
 
-<div class="preloader">Загружаю...</div>
+{{--<div class="preloader">Загружаю...</div>--}}
 <div class="application">
     <form class="my-form hide" method="post"  id="callMasters" >
-        <div class="row">
+        <div class="row callForm">
             {{csrf_field()}}
             {{method_field('POST')}}
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label for="name">Введите имя:</label>
                     <input id="name" name="userName" type="text" placeholder="Введите имя" class="form-control" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group">
                     <label for="userTelephon">Номер телефона</label>
                     <input name="userTelephon" id="telephon" type="text" placeholder="номер телефона" class="form-control" />
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="userEmail">Ваш Email</label>
+                    <input name="userEmail" id="Email" type="text" placeholder="Ваш емейл" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="userTelephon">Ваше сообщение</label>
+                    <textarea name="messageText" cols="5" rows="5" class="form-control" placeholder="Сообщение не мение 30 символовв"/></textarea>
+                </div>
+            </div>
         </div>
-        <input class="btn btn-success" type="submit" id="send" value="отправить">
-        <input class="btn btn-warning" type="reset" id="cancel" value="отмена">
+        <input class="btn btn-success pull-right" type="submit" id="send" value="отправить">
+        <input class="btn btn-warning " type="reset" id="cancel" value="отмена">
     </form>
     <div class="" id="show-form">
     <img class="applications" src="/obrat.jpg">
