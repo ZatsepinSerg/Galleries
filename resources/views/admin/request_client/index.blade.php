@@ -1,23 +1,7 @@
 @extends('layout_parts.layout')
 
 @section('content')
-    <script >
-        $(document).ready(function(){
-            $.ajax({
-                type: 'get',
-                url: '/admin/count-new-message',
 
-                success: function(response) {
-                    alert(response);
-                    $('#countMessage').append('(' + response +')')
-                },
-                error: function(){
-                    alert('error');
-                }
-            });
-            return false;
-        });
-    </script>
     <div class="content container-fluid">
         <div class="row">
             <div class="col-md-3" >

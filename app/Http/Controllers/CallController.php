@@ -87,7 +87,9 @@ class CallController extends Controller
      */
     public function edit($id)
     {
-        //
+         $showEditClientRequest = RequestCallback::find($id);
+
+        return view('admin.request_client.edit',compact('showEditClientRequest'));
     }
 
     /**
@@ -99,7 +101,7 @@ class CallController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd('Update');
     }
 
     /**
@@ -110,7 +112,7 @@ class CallController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd('DELETE');
     }
 
     public function newMessage(){

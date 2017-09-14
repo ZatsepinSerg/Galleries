@@ -19,51 +19,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/js/ga.js"></script>
     <script src="/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/ajax/messageCount.js"></script>
+    <script src="/js/ajax/callBackForm.js"></script>
     {{--<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>--}}
 
 </head>
 <body>
-
-<script>
-    $(document).ready(function() {
-        $('#show-form').click(function () {
-            $('.my-form').removeClass('hide');
-            $('.applications').hide();
-            $( "#name" ).focus();
-        });
-        $('#cancel').click(function () {
-            $('.my-form').addClass('hide');
-            $('.applications').show();
-        });
-    });
-
-
-    $(document).ready(function(){
-        $("#callMasters").submit(function() { //устанавливаем событие отправки для формы с id=form
-
-            var  date = $(this).serialize();
-
-            $.ajax({
-                type: 'post',
-                url: '/application',
-                data: date,
-                success: function(response) {
-                    //alert(response);
-
-                    $('.my-form').addClass('hide');
-                    $('.applications').show();
-                },
-                error: function(){
-                    alert('error');
-                }
-            });
-            return false;
-        });
-    });
-</script>
-
-
-{{--<div class="preloader">Загружаю...</div>--}}
 <div class="application">
     <form class="my-form hide" method="post"  id="callMasters" >
         <div class="row callForm">
