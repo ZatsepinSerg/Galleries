@@ -26,7 +26,7 @@ Route::DELETE('/news/{id}','NewsController@destroy');
 
 Route::get('/admin/request-clients','CallController@index');
 Route::get('/admin/request-clients/{id}','CallController@show');
-Route::get('/admin/request-clients/{id}/edit','CallController@edit');
+//Route::get('/admin/request-clients/{id}/edit','CallController@edit');
 Route::PUT('/admin/request-clients/{id}','CallController@update');
 Route::DELETE('/admin/request-clients/{id}','CallController@destroy');
 

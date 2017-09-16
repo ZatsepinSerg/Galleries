@@ -1,4 +1,4 @@
-@extends('layout_parts.layout')
+@extends('layout_parts.layoutAdmin')
 @section('content')
 
 <div class="form-horizontal col-sm-offset-3">

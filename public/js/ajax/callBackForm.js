@@ -16,7 +16,7 @@ $(document).ready(function(){
     $("#callMasters").submit(function() { //устанавливаем событие отправки для формы с id=form
 
         var  date = $(this).serialize();
-
+      //TODO::создать всплывающее окно поцентру экрана после отправки сообщения
         $.ajax({
             type: 'post',
             url: '/application',

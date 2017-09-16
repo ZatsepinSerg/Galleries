@@ -87,9 +87,9 @@ class CallController extends Controller
      */
     public function edit($id)
     {
-         $showEditClientRequest = RequestCallback::find($id);
-
-        return view('admin.request_client.edit',compact('showEditClientRequest'));
+//         $showEditClientRequest = RequestCallback::find($id);
+//
+//        return view('admin.request_client.edit',compact('showEditClientRequest'));
     }
 
     /**
@@ -99,9 +99,27 @@ class CallController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update (Request $request ,$id)
     {
-        dd('Update');
+        $this->validate($request,[
+            'status' => 'required|integer'
+        ]);
+
+        if ($request->status) {
+            $answer = RequestCallback::where('id', '=', $id)->update([
+                'status' => '0']);
+        } else {
+            $answer = RequestCallback::where('id', '=', $id)->update([
+                'status' => '1'
+            ]);
+        }
+        if($answer) {
+            session()->flash('message', 'статус упешно изменён');
+        }else{
+            session()->flash('message', 'произошла ошибка!Пожалуйста повторите');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -112,14 +130,19 @@ class CallController extends Controller
      */
     public function destroy($id)
     {
-        dd('DELETE');
+
+        $answer = RequestCallback::where('id', '=', $id)->delete();
+
+        if ($answer) {
+            session()->flash('message', 'Зафвка  удалена!');
+        } else {
+            session()->flash('message', 'Упссс,что-то пошла не так!');
+        }
+        return redirect()->action('CallController@index');
     }
 
     public function newMessage(){
 
-//        $this->validate($request,[
-//            'action' =>$request->action
-//        ]);
 
          $countNewMessage = RequestCallback::where('status','=','0')->count();
 

@@ -21,8 +21,6 @@
     <script src="/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/js/ajax/messageCount.js"></script>
     <script src="/js/ajax/callBackForm.js"></script>
-    {{--<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>--}}
-
 </head>
 <body>
 <div class="application">
@@ -62,7 +60,9 @@
     <img class="applications" src="/obrat.jpg">
     </div>
 </div>
+<div id="test" style="background-color: #0d3625">
 
+</div>
 <div class="container-fluid">
     <div class="row">
         @include('layout_parts.navBar')

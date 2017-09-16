@@ -1,28 +1,7 @@
-@extends('layout_parts.layout')
+@extends('layout_parts.layoutAdmin')
 
 @section('content')
 
-    <div class="content container-fluid">
-        <div class="row">
-            <div class="col-md-3" >
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Панель управления
-                        </h3>
-                    </div>
-                </div>
-                <ul class="nav">
-                    <li class="navMenuAdm"><a href="/admin/create">Создать галерею</a></li>
-                    <li class="navMenuAdm"><a href="/news/create">Добавить новость</a></li>
-                    <li class="navMenuAdm"><a href="/">Редактировать новости</a></li>
-                    <li class="navMenuAdm" ><a href="/admin/request-clients" id="countMessage">Заявки</a></li>
-                    <li class="navMenuAdm"><a href="#">Настройки</a></li>
-                    <li class="navMenuAdm"><a href="#">Написать автору</a></li>
-
-                </ul>
-            </div>
-            <div class="col-md-9">
     <table  class="table table-bordered">
         <thead>
         <tr>
@@ -41,9 +20,13 @@
                     <td>{{$showRequest->name_clients}}</td>
                     <td>{{$showRequest->telephon}}</td>
                     <td>{{$showRequest->email}}</td>
-                    <td><a href="/admin/request-clients/{{$showRequest->id}}">
+                    <td><div class="col-md-6"><a href="/admin/request-clients/{{$showRequest->id}}">
                             <button type="button" class="btn btn-default">Подробнее</button>
-                        </a></td>
+                        </a> </div><div class="col-md-6"> <form method="post" action="/admin/request-clients/{{$showRequest->id}}">
+                            {{csrf_field()}}
+                            {{method_field('DELETE')}}
+                            <input type="submit" class="btn btn-primary" value="Удалить">
+                        </form></div></td>
                 </tr>
             @else
                 <tr class=" btn-danger">
@@ -51,17 +34,19 @@
                     <td>{{$showRequest->name_clients}}</td>
                     <td>{{$showRequest->telephon}}</td>
                     <td>{{$showRequest->email}}</td>
-                    <td><a href="/admin/request-clients/{{$showRequest->id}}">
+                    <td><div class="col-md-6"><a href="/admin/request-clients/{{$showRequest->id}}">
                             <button type="button" class="btn btn-default">Подробнее</button>
-                        </a></td>
+                        </a> </div>
+                        <div class="col-md-6"> <form method="post" action="/admin/request-clients/{{$showRequest->id}}">
+                            {{csrf_field()}}
+                            {{method_field('DELETE')}}
+                            <input type="submit" class="btn btn-primary" value="Удалить">
+                        </form> </div></td>
                 </tr>
             @endif
         @endforeach
 
         </tbody>
     </table>
-    </div>
-    </div>
-    </div>
     {{$showClientsRequest->render()}}
 @endsection
