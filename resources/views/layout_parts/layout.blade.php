@@ -60,8 +60,8 @@
     <img class="applications" src="/obrat.jpg">
     </div>
 </div>
-<div id="test" style="background-color: #0d3625">
-
+<div id="pop_up_Callback" class="pop-up_Callback hide" >
+<div class="pop-up_Callback_Text"><h3>Ваша заявка принята </h3></div>
 </div>
 <div class="container-fluid">
     <div class="row">

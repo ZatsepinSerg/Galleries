@@ -1,64 +1,80 @@
 .modal-dialog {
-    width:600px;
-}
-.thumbnail {
-    margin-bottom:6px;
+    width: 600px;
 }
 
-li:hover{
+.thumbnail {
+    margin-bottom: 6px;
+}
+
+li:hover {
     background: #9BA2AB;
     border-radius: 5px;
 }
+
 html {
     position: relative;
     min-height: 100%;
 }
+
 body {
     margin-bottom: 10vh;
     padding-bottom: 5%;
     background-image: url(/lou901.jpeg);
     min-height: 1200px;
 }
+
 footer {
     position: absolute;
     bottom: 0;
-    background-color:#222;
-    border-color:#090909;
+    background-color: #222;
+    border-color: #090909;
     width: 100%;
     height: 120px;
 }
 
-.navMenuAdm{
+.navMenuAdm {
     border-radius: 5px;
-    border: solid  #e9eef0;
+    border: solid #e9eef0;
     margin: 5px 0 0 5px;
     background-color: white;
 }
 
-.imgStyle{
+.imgStyle {
     width: 70%;
     height: 70%;
     border-radius: 10px;
 }
 
-.application{
-
+.application {
     padding-left: 50px;
     width: 30%;
     position: fixed;
     z-index: 100;
 }
 
-.applications{
+.applications {
     position: fixed;
     border-radius: 100%;
     height: 100px;
     width: 100px;
     z-index: 100;
-    margin: 40% 0 0 0 ;
-}
-.callForm{
-    margin-top:40%;
-
+    margin: 40% 0 0 0;
 }
 
+.callForm {
+    margin-top: 40%;
+}
+
+.pop-up_Callback {
+    background-color: #ffe47a;
+    height: 8%;
+    width: 22%;
+    position: absolute;
+    z-index: 10;
+    border-radius: 12px;
+}
+
+.pop-up_Callback_Text {
+    text-align: center;
+    margin-top: 25%;
+}
