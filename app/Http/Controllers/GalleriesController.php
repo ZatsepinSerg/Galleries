@@ -87,10 +87,8 @@ class GalleriesController extends Controller
             'time' => 'required|min:4'
         ]);
 
-        $galleries->createNewGalleries($request);
+        $galleries_ids = $galleries->createNewGalleries($request);
         
-        $galleries_ids = $galleries->selectIdNewGalleri();
-
            if($galleries_ids)
            {
                session()->flash('message', 'Альбом успешно создан!загрузите фото!');

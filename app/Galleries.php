@@ -43,22 +43,18 @@ class Galleries extends Model
     
     public function createNewGalleries($request)
     {
-        Galleries::create([
+        $data = Galleries::create([
             'title' => $request->title,
             'alias' => $request->alias,
             'body' => $request->body,
             'time' => $request->time,
         ]);
+
+        $lastInsertedId = $data->id;
+        
+        return $lastInsertedId;
     }
-
-    public function selectIdNewGalleri()
-    {
-          $id = Galleries::select('id')->orderBy('id', 'max')->limit(1)->get();
-
-        return  $id;
-    }
-
-
+    
     public function updateGalleries($id,$request)
     {
         $answer = Galleries::where('id', $id)

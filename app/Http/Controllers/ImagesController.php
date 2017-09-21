@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Galleries;
 use App\Images;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\File;
