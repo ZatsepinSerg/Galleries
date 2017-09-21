@@ -1,7 +1,7 @@
 @extends('layout_parts.layoutAdmin')
 @section('content')
                 <div class="container-fluid">
-                    @foreach( $news AS $new)
+                    @foreach( $newsAll AS $new)
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="row">
@@ -42,7 +42,7 @@
                     @endforeach
                     <div class="col-md-10">
                         <div class="col-sm-offset-6">
-                            {{$news->render()}}
+                            {{$newsAll->render()}}
                         </div>
                     </div>
                 </div>

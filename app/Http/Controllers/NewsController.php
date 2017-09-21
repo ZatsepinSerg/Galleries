@@ -18,19 +18,22 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = News::orderBy('id', 'DESC')->paginate(3);
+        $news = new News();
+
+        $newsAll = $news->selectAll();
 
         if(Auth::check()){
-            return view('admin.news.index', compact('news'));
+            return view('admin.news.index', compact('newsAll'));
         }else{
-            return view('news.homePage', compact('news'));
+            return view('news.homePage', compact('newsAll'));
         }
-
     }
 
     public function show($alias)
     {
-        $fullNew = News::find($alias);
+        $news = new News();
+
+        $fullNew = $news->showOneNews($alias);
 
         return view('news.show', compact('fullNew'));
     }
@@ -71,13 +74,18 @@ class NewsController extends Controller
 
     public function edit($id)
     {
-        $newsEdit = News::where('id','=',$id)->first();
+        $news = new News();
 
+        $newsEdit = $news->showOnEdit($id);
+        
         return view('admin.news.edit',compact('newsEdit'));
     }
 
     public function update(Request $request ,$id)
     {
+        $news = new News();
+        $time = time();
+        
         $this->Validate($request, [
             'title' => 'required|min:5|max:150',
             'body' => 'required|min:20',
@@ -86,26 +94,15 @@ class NewsController extends Controller
         ]);
 
         if (!empty($request->file('file'))) {
-            $time = time();
-
-            $oldImageWay = News::where('id', $id)->pluck('img_way')->first();
+            $oldImageWay = $news->imageWay($id);
             Storage::delete($oldImageWay);
 
             $imgWay = "/images/news/".$time. "-".$request->file('file')->getClientOriginalName();
             $request->file('file')->move(public_path().'/images/news/', $time."-".$request->file('file')->getClientOriginalName());
 
-            $answer = News::where('id', '=', $id)->update([
-                'title' => $request->title,
-                'body' => $request->body,
-                'alias' => $request->alias,
-                'img_way' => $imgWay
-            ]);
-        } else {
-            $answer = News::where('id', '=', $id)->update([
-                'title' => $request->title,
-                'body' => $request->body,
-                'alias' => $request->alias,
-            ]);
+            $answer = $news->updateNews($id,$request,$imgWay);
+        }else {
+            $answer = $news->updateNews($id,$request);
         }
 
         if ($answer) {
@@ -119,11 +116,13 @@ class NewsController extends Controller
 
     public function destroy($id)
     {
-        $imgWay = News::where('id', $id)->pluck('img_way')->first();
+        $news = new News();
+
+        $imgWay = $news->imageWay($id);
 
         Storage::delete($imgWay);
 
-        $answer = News::where('id', '=', $id)->delete();
+        $answer = $news->deleteNews($id);
 
         if ($answer) {
             session()->flash('message', 'Новость удалена!');

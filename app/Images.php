@@ -14,4 +14,19 @@ class Images extends Model
     {
         return $this->belongsTo(Galleries::class);
     }
+
+
+    public function selectAllImagesFromId($id)
+    {
+        $allImg = Images::having('galleries_id', '=', $id)->get();
+        return $allImg;
+    }
+    
+    public function deleteImg($id)
+    {
+          $answer= Images::where('id', '=', $id)->delete();
+
+        return  $answer;
+    }
+
 }

@@ -52,9 +52,9 @@
                     <textarea name="messageText" cols="5" rows="5" class="form-control" placeholder="Сообщение не мение 30 символовв"/></textarea>
                 </div>
             </div>
-        </div>
         <input class="btn btn-success pull-right" type="submit" id="send" value="отправить">
         <input class="btn btn-warning " type="reset" id="cancel" value="отмена">
+        </div>
     </form>
     <div class="" id="show-form">
     <img class="applications" src="/obrat.jpg">

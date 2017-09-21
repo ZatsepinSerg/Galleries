@@ -63,6 +63,9 @@ footer {
 
 .callForm {
     margin-top: 40%;
+    border: 10px;
+    background: #a6ff56;
+    border-radius: 10px;
 }
 
 .pop-up_Callback {

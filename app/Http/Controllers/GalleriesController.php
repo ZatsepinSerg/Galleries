@@ -21,11 +21,14 @@ class GalleriesController extends Controller
      */
     public function index()
     {
-        $galleries = Galleries::orderBy('time','DESC')->paginate(5);
+        $gallery = new Galleries();
 
-        if (Auth::check()) {
+        $galleries = $gallery->showAllGalleries();
+
+        if (Auth::check())
+        {
             return view('admin.index' ,compact('galleries'));
-        }else{
+        }else {
         return view('galleries.index', compact('galleries'));}
     }
     /**
@@ -38,7 +41,10 @@ class GalleriesController extends Controller
 
     public function show($alias)
     {
-        $gallery=Galleries::find($alias);
+        $galleries = new Galleries();
+
+        $gallery =  $galleries->showOneGalleries($alias);
+
         return view('galleries.show',compact('gallery'));
     }
     /**
@@ -56,8 +62,12 @@ class GalleriesController extends Controller
 
     public function edit($id)
     {
-        if (Auth::check()) {
-            $galery = Galleries::where('id', $id)->first();
+        $galleries = new Galleries();
+
+        if (Auth::check())
+        {
+            $galery = $galleries->select($id);
+
             return view('galleries.edit', compact('galery'));
         } else return redirect()->home();
     }
@@ -66,58 +76,71 @@ class GalleriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        $this->validate(request(), [
+        $galleries = new Galleries();
+
+        $this->validate($request, [
             'body' => 'required|min:10',
             'title' => 'required',
             'alias' => 'required',
             'time' => 'required|min:4'
         ]);
 
-        Galleries::create([
-            'title' => request('title'),
-            'alias' => request('alias'),
-            'body' => request('body'),
-            'time' => request('time'),
-        ]);
-        $galleries_ids = Galleries::select('id')->orderBy('id', 'max')->limit(1)->get();
-
-        session()->flash('message', 'Альбом успешно создан!загрузите фото!');
+        $galleries->createNewGalleries($request);
         
-        return view('images.create', compact('galleries_ids'));
+        $galleries_ids = $galleries->selectIdNewGalleri();
+
+           if($galleries_ids)
+           {
+               session()->flash('message', 'Альбом успешно создан!загрузите фото!');
+
+               return view('images.create', compact('galleries_ids'));
+           }else{
+               session()->flash('message', 'ошибка при создании альбома!');
+
+               return redirect()->home();
+           }
+
     }
 
-    public function update($id)
+    public function update(Request $request,$id)
     {
-        $this->validate(request(), [
+        $galleries = new Galleries();
+        
+        $this->validate($request, [
             'body' => 'required|min:10',
             'title' => 'required',
             'alias' => 'required'
         ]);
+        $answer = $galleries->updateGalleries($id,$request);
 
-        Galleries::where('id', $id)
-            ->update(array('title' => request('title'),
-                'alias' => request('alias'),
-                'body' => request('body')));
-
-        session()->flash('message', 'Альбом успешно обновлен!');
-
+        if($answer)
+        {
+            session()->flash('message', 'Альбом успешно обновлен!');
+        }else{
+            session()->flash('message', 'Ошибка при обновлении альбома!');
+        }
         return redirect()->home();
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
+        $galleries = new Galleries();
+        $imgObj = new Images();
+
+        $id = $request->id;
         //получаем айдишник галлереи request('galleries_id')
-        $images = Images::having('galleries_id', '=', request('id'))->get();//выборка всех файлов галереи
+        $images = $imgObj->selectAllImagesFromId($id);//выборка всех файлов галереи
 
         foreach ($images AS $image) {
             Storage::delete($image->way); //удаление по одному из папки проекта
-            Images::where('id', '=', $image->id)->delete();//удаление по одному из БД
+            $imgObj->deleteImg($image->id);//удаление по одному из БД
         }
 
-        Storage::deleteDirectory('/' . request('id')); //удаление дериктории из папки проекта
-        Galleries::where('id', '=', request('id'))->delete();//удаление галереи
+        Storage::deleteDirectory('/' .$id); //удаление дериктории из папки проекта
+        $galleries->deleteGalleri($id);//удаление галереи
+        
         session()->flash('message', 'Галерея успешно удалена !');
 
         return redirect()->home();
