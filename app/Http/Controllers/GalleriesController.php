@@ -111,6 +111,7 @@ class GalleriesController extends Controller
             'title' => 'required',
             'alias' => 'required'
         ]);
+        
         $answer = $galleries->updateGalleries($id,$request);
 
         if($answer)

@@ -57,11 +57,20 @@ class Galleries extends Model
     
     public function updateGalleries($id,$request)
     {
-        $answer = Galleries::where('id', $id)
-            ->update([
-                'title' => $request->title,
-                'alias' => $request->alias,
-                'body' => $request->body]);
+
+        if (isset($request->way) && !empty($request->way)) {
+            $answer = Galleries::where('id',$request->galleries_id)
+                ->update([
+                    'view' => $request->way,
+                    'count' => $request->count
+                ]);
+        } else {
+            $answer = Galleries::where('id', $id)
+                ->update([
+                    'title' => $request->title,
+                    'alias' => $request->alias,
+                    'body' => $request->body]);
+        }
 
         return $answer;
     }
@@ -72,6 +81,15 @@ class Galleries extends Model
 
         return $answer;
     }
-    
+
+    public function updateCountGalleries($request){
+
+        $answer = Galleries::where('id',$request->galleries_id)
+            ->update(array(
+                'count' => $request->count-1
+            ));
+
+        return $answer;
+    }
     
 }

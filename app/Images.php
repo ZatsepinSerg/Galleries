@@ -29,4 +29,24 @@ class Images extends Model
         return  $answer;
     }
 
+    public function showStoreImg($id)
+    {
+        $images = Images::having('galleries_id', '=', $id)->get();
+        
+        return $images;
+    }
+
+    public function updateImage($request)
+    {
+        $answer = Images::where('id', $request->id)
+            ->update(['trim' => $request->trim,
+                'view' => $request->view,
+                'way' => $request->way,
+                'galleries_id' => $request->galleries_id,
+                'name' => $request->name
+            ]);
+
+        return $answer;
+    }
+
 }

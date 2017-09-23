@@ -33,22 +33,26 @@ class ImagesController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->file()){
-        foreach ($request->file() as $file) {
-            foreach ($file as $f) {
-                $fil = new Images();
-                $time = time();
-                $fil->galleries_id = request('galleries_id');
-                $fil->way = "/images/".request('galleries_id')."/".$time.$f->getClientOriginalName();
-                $fil->save();
-                $f->move("images/".request('galleries_id'),$time.$f->getClientOriginalName());
+        if ($request->file()) {
+            foreach ($request->file() as $file) {
+                foreach ($file as $f) {
+                    $fil = new Images();
+                    $time = time();
+                    $fil->galleries_id = $request->galleries_id;
+                    $fil->way = "/images/" . $request->galleries_id . "/" . $time . $f->getClientOriginalName();
+                    $fil->save();
+                    $f->move("images/" . $request->galleries_id, $time . $f->getClientOriginalName());
+                }
             }
-        }
-        session()->flash('message', 'выберите главное изображение и дайте название!');
-        $galleries_id = request('galleries_id');
-        return redirect()->action('ImagesController@show', compact('galleries_id'));}
-        else{
+
+            session()->flash('message', 'выберите главное изображение и дайте название!');
+
+            $galleries_id = $request->galleries_id;
+
+            return redirect()->action('ImagesController@show', compact('galleries_id'));
+        } else {
             session()->flash('message', 'файлы не выбраны!!!');
+
             return redirect()->back();
         }
     }
@@ -59,12 +63,16 @@ class ImagesController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request $request)
     {
-        if (request('galleries_id')) {
-            $images = Images::having('galleries_id', '=', request('galleries_id'))
-                ->get();
+        if ($request->galleries_id) {
+            
+            $imageClass = new Images();
+            
+            $images =  $imageClass->showStoreImg($request->galleries_id);
+            
             session()->flash('messages', 'выберите главное изображение и дайте название!');
+            
             return view('images.show', compact('images'));
         } else {
             return redirect()->home();
@@ -87,23 +95,23 @@ class ImagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update()
+    public function update(Request $request)
     {
-        Images::where('id', request('id'))
-            ->update(array('trim' => request('trim'),
-                'view' => request('view'),
-                'way' => request('way'),
-                'galleries_id' => request('galleries_id'),
-                'name' => request('name')
-            ));
-        if (request('view')) {
-            Galleries::where('id', request('galleries_id'))
-                ->update(array(
-                    'view' => request('way'),
-                    'count' => request('count'),
-                ));;
+        $images = new Images();
+
+        $answer = $images->updateImage($request);
+
+        if ($request->view) {
+            $gallerias = new Galleries();
+
+            $answer = $gallerias->updateGalleries($request->id, $request);
         }
-        session()->flash('message', 'Запись успешно обновлена!');
+        if ($answer) {
+            session()->flash('message', 'Запись успешно обновлена!');
+        } else {
+            session()->flash('message', 'Ошибка обновления записи!');
+        }
+
         return redirect()->back();
     }
 
@@ -113,18 +121,22 @@ class ImagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
+        $gallerias = new Galleries();
 
         $file = Images::find($id);
         Storage::delete($file->way); //получение пути и удаленние  записи из папки
         Images::destroy($id);//удаление из БД
 
-        Galleries::where('id', request('galleries_id'))
-            ->update(array(
-                'count' => request('count')-1
-            ));
-        session()->flash('message', 'изображение  успешно удалено !');
+        $answer = $gallerias->updateCountGalleries($request);
+
+        if($answer){
+                session()->flash('message', 'Изображение  успешно удалено !');
+            }else{
+                session()->flash('message', 'Произошла ошибка!');
+        }
+
         return redirect()->back();
 
     }
