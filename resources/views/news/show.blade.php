@@ -21,9 +21,9 @@
                                                     {{Carbon\Carbon::parse($fullNew->created_at)->format('d M Y')}}
                                                 </p>
                                                 <br>
-                                                <p>
-                                                    {{$fullNew->body}}
-                                                </p>
+                                                <div class="row"><p>
+                                                        {{$fullNew->body}}
+                                                    </p></div>
                                             </div>
                                         </div>
                                 </div>

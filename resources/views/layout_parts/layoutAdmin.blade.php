@@ -26,7 +26,6 @@
     <div class="row">
         @include('layout_parts.navBar')
         @include('layout_parts.errors')
-
                 <div class="col-md-3">
                     @include('layout_parts.menuAdm')
                 </div>
@@ -36,6 +35,9 @@
                             {{$flash}}
                         </div>
                     @elseif($flash = session('messages'))
+                        <div class="alert alert-danger col-lg-8 col-lg-offset-2">
+                            {{$flash}}
+                        </div>
                     @endif
                     @yield('content')
                 </div>

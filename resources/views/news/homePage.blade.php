@@ -23,9 +23,9 @@
                                             {{Carbon\Carbon::parse($new->created_at)->format('d M Y')}}
                                         </p>
                                        <br>
-                                        <p>
+                                        <div class="row" style=" "><p>
                                             {{$new->body}}
-                                        </p>
+                                        </p></div>
                                         <p>
                                             <a class="btn btn-primary" href="/news/{{$new->alias}}">Подробнее</a>
                                         </p>

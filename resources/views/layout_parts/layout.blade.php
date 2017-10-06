@@ -72,6 +72,9 @@
                 {{$flash}}
             </div>
         @elseif($flash = session('messages'))
+            <div class="alert alert-danger col-lg-8 col-lg-offset-2">
+            {{$flash}}
+            </div>
         @endif
         @yield('content')
 
