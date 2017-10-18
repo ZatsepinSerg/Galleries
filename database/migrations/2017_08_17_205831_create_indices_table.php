@@ -18,7 +18,7 @@ class CreateIndicesTable extends Migration
             $table->string('title');
             $table->string('alias');
             $table->text('body');
-            $table->string('img_way');
+            $table->string('img_way')->nullable();
             $table->timestamps();
         });
     }

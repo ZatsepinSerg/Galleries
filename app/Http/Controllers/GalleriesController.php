@@ -14,6 +14,12 @@ use Illuminate\Contracts\Filesystem\Factory;
 class GalleriesController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->galleryObj = new Galleries();
+        $this->imgObj = new Images();
+    }
+
     /**
      * Index the form for index a resource.
      *
@@ -21,15 +27,13 @@ class GalleriesController extends Controller
      */
     public function index()
     {
-        $gallery = new Galleries();
-
-        $galleries = $gallery->showAllGalleries();
+        $galleries = $this->galleryObj->showAllGalleries();
 
         if (Auth::check())
         {
             return view('admin.index' ,compact('galleries'));
         }else {
-        return view('galleries.index', compact('galleries'));}
+            return view('galleries.index', compact('galleries'));}
     }
     /**
      * Show the form for show a resource.
@@ -41,9 +45,7 @@ class GalleriesController extends Controller
 
     public function show($alias)
     {
-        $galleries = new Galleries();
-
-        $gallery =  $galleries->showOneGalleries($alias);
+        $gallery =  $this->galleryObj->showOneGalleries($alias);
 
         return view('galleries.show',compact('gallery'));
     }
@@ -62,11 +64,9 @@ class GalleriesController extends Controller
 
     public function edit($id)
     {
-        $galleries = new Galleries();
-
         if (Auth::check())
         {
-            $galery = $galleries->select($id);
+            $galery = $this->galleryObj->select($id);
 
             return view('galleries.edit', compact('galery'));
         } else return redirect()->home();
@@ -78,8 +78,6 @@ class GalleriesController extends Controller
      */
     public function store(Request $request)
     {
-        $galleries = new Galleries();
-
         $this->validate($request, [
             'body' => 'required|min:10',
             'title' => 'required',
@@ -87,7 +85,7 @@ class GalleriesController extends Controller
             'time' => 'required|min:4'
         ]);
 
-        $galleries_ids = $galleries->createNewGalleries($request);
+        $galleries_ids = $this->galleryObj->createNewGalleries($request);
         
            if($galleries_ids)
            {
@@ -104,15 +102,13 @@ class GalleriesController extends Controller
 
     public function update(Request $request,$id)
     {
-        $galleries = new Galleries();
-        
         $this->validate($request, [
             'body' => 'required|min:10',
             'title' => 'required',
             'alias' => 'required'
         ]);
         
-        $answer = $galleries->updateGalleries($id,$request);
+        $answer = $this->galleryObj->updateGalleries($id,$request);
 
         if($answer)
         {
@@ -125,23 +121,26 @@ class GalleriesController extends Controller
 
     public function destroy(Request $request)
     {
-        $galleries = new Galleries();
-        $imgObj = new Images();
-
         $id = $request->id;
         //получаем айдишник галлереи request('galleries_id')
-        $images = $imgObj->selectAllImagesFromId($id);//выборка всех файлов галереи
+        $images = $this->imgObj->selectAllImagesFromId($id);//выборка всех файлов галереи
 
         foreach ($images AS $image) {
             Storage::delete($image->way); //удаление по одному из папки проекта
-            $imgObj->deleteImg($image->id);//удаление по одному из БД
+            $this->imgObj->deleteImg($image->id);//удаление по одному из БД
         }
 
         Storage::deleteDirectory('/' .$id); //удаление дериктории из папки проекта
-        $galleries->deleteGalleri($id);//удаление галереи
+        $this->galleryObj->deleteGalleri($id);//удаление галереи
         
         session()->flash('message', 'Галерея успешно удалена !');
 
         return redirect()->home();
+    }
+
+    public function __destruct()
+    {
+        $this->galleryObj;
+        $this->imgObj ;
     }
 }

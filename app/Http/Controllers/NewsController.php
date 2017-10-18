@@ -11,16 +11,21 @@ use Illuminate\Contracts\Filesystem\Factory;
 
 class NewsController extends Controller
 {
+
     /**
      * Index the form for index a resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->newsObj = new News();
+    }
+
     public function index()
     {
-        $news = new News();
-
-        $newsAll = $news->selectAll();
+        $newsAll = $this->newsObj->selectAll();
 
         if(Auth::check()){
             return view('admin.news.index', compact('newsAll'));
@@ -31,9 +36,7 @@ class NewsController extends Controller
 
     public function show($alias)
     {
-        $news = new News();
-
-        $fullNew = $news->showOneNews($alias);
+        $fullNew = $this->newsObj->showOneNews($alias);
 
         return view('news.show', compact('fullNew'));
     }
@@ -55,17 +58,18 @@ class NewsController extends Controller
                 'title' =>'required|min:5|max:150',
                 'body' => 'required|min:20',
                 'alias' => 'required|min:5',
-                'file' =>'mimes:jpeg,bmp,png'
+                'file' =>'required|mimes:jpeg,bmp,png'
             ]
         );
         //придумать перевод заголовка в транслит для алиаса
-        $news = new News();
-        $news->title =  $request->title;
-        $news->body =  $request->body;
-        $news->alias =  $request->alias;
-        $news->img_way = "/images/news/".$time."-".$request->file('file')->getClientOriginalName();
-        $request->file('file')->move(public_path().'/images/news/',$time."-".$request->file('file')->getClientOriginalName());
-        $news->save();
+
+        $this->newsObj->title = $request->title;
+        $this->newsObj->body = $request->body;
+        $this->newsObj->alias = $request->alias;
+        $this->newsObj->img_way = "/images/news/" . $time . "-" . $request->file('file')->getClientOriginalName();
+        $request->file('file')->move(public_path() . '/images/news/', $time . "-" .
+                                                                  $request->file('file')->getClientOriginalName());
+        $this->newsObj->save();
 
         session()->flash('message','Новость успешно добавлена!');
 
@@ -74,16 +78,16 @@ class NewsController extends Controller
 
     public function edit($id)
     {
-        $news = new News();
 
-        $newsEdit = $news->showOnEdit($id);
+
+        $newsEdit = $this->newsObj->showOnEdit($id);
         
         return view('admin.news.edit',compact('newsEdit'));
     }
 
     public function update(Request $request ,$id)
     {
-        $news = new News();
+
         $time = time();
         
         $this->Validate($request, [
@@ -94,15 +98,15 @@ class NewsController extends Controller
         ]);
 
         if (!empty($request->file('file'))) {
-            $oldImageWay = $news->imageWay($id);
+            $oldImageWay = $this->newsObj->imageWay($id);
             Storage::delete($oldImageWay);
 
             $imgWay = "/images/news/".$time. "-".$request->file('file')->getClientOriginalName();
             $request->file('file')->move(public_path().'/images/news/', $time."-".$request->file('file')->getClientOriginalName());
 
-            $answer = $news->updateNews($id,$request,$imgWay);
+            $answer = $this->newsObj->updateNews($id,$request,$imgWay);
         }else {
-            $answer = $news->updateNews($id,$request);
+            $answer = $this->newsObj->updateNews($id,$request);
         }
 
         if ($answer) {
@@ -116,13 +120,11 @@ class NewsController extends Controller
 
     public function destroy($id)
     {
-        $news = new News();
-
-        $imgWay = $news->imageWay($id);
+        $imgWay = $this->newsObj->imageWay($id);
 
         Storage::delete($imgWay);
 
-        $answer = $news->deleteNews($id);
+        $answer = $this->newsObj->deleteNews($id);
 
         if ($answer) {
             session()->flash('message', 'Новость удалена!');
@@ -131,5 +133,10 @@ class NewsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function __destruct()
+    {
+        $this->newsObj;
     }
 }

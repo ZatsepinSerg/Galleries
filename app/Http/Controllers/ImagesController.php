@@ -11,7 +11,11 @@ use Illuminate\Database\Query\Builder;
 use Symfony\Component\HttpFoundation\File\File;
 class ImagesController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->imageObj = new Images();
+        $this->galeriasObj = new Galleries();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -20,9 +24,7 @@ class ImagesController extends Controller
      */
     public function create()
     {
-        if (Auth::check()) {
             return view('images.create');
-        } else return redirect()->home();
     }
 
     /**
@@ -36,11 +38,11 @@ class ImagesController extends Controller
         if ($request->file()) {
             foreach ($request->file() as $file) {
                 foreach ($file as $f) {
-                    $fil = new Images();
                     $time = time();
-                    $fil->galleries_id = $request->galleries_id;
-                    $fil->way = "/images/" . $request->galleries_id . "/" . $time . $f->getClientOriginalName();
-                    $fil->save();
+
+                    $this->imageObj->galleries_id = $request->galleries_id;
+                    $this->imageObj->way = "/images/" . $request->galleries_id . "/" . $time . $f->getClientOriginalName();
+                    $this->imageObj->save();
                     $f->move("images/" . $request->galleries_id, $time . $f->getClientOriginalName());
                 }
             }
@@ -66,10 +68,7 @@ class ImagesController extends Controller
     public function show(Request $request)
     {
         if ($request->galleries_id) {
-            
-            $imageClass = new Images();
-            
-            $images =  $imageClass->showStoreImg($request->galleries_id);
+            $images =   $this->imageObj->showStoreImg($request->galleries_id);
             
             session()->flash('messages', 'выберите главное изображение и дайте название!');
             
@@ -97,14 +96,12 @@ class ImagesController extends Controller
      */
     public function update(Request $request)
     {
-        $images = new Images();
-
-        $answer = $images->updateImage($request);
+        $answer =  $this->imageObj->updateImage($request);
 
         if ($request->view) {
-            $gallerias = new Galleries();
 
-            $answer = $gallerias->updateGalleries($request->id, $request);
+
+            $answer = $this->galleriasObj->updateGalleries($request->id, $request);
         }
         if ($answer) {
             session()->flash('message', 'Запись успешно обновлена!');
@@ -121,15 +118,15 @@ class ImagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Request $request,$id)
     {
-        $gallerias = new Galleries();
-
         $file = Images::find($id);
+
         Storage::delete($file->way); //получение пути и удаленние  записи из папки
         Images::destroy($id);//удаление из БД
 
-        $answer = $gallerias->updateCountGalleries($request);
+        $answer = $this->galleriasObj->updateCountGalleries($request);
 
         if($answer){
                 session()->flash('message', 'Изображение  успешно удалено !');
@@ -139,5 +136,11 @@ class ImagesController extends Controller
 
         return redirect()->back();
 
+    }
+
+    public function __destruct()
+    {
+        $this->imageObj;
+        $this->galeriasObj;
     }
 }

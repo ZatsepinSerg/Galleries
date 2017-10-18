@@ -15,11 +15,6 @@
     return view('welcome');
 });*/
 
-//-------------CRUD and REST----------------
-
-
-
-
 
 Route::group(['middleware' => 'admin'], function () {
 
