@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','status','role'
     ];
 
     /**
@@ -26,4 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function showAllUsers()
+    {
+           $allUser= User::select('email','role','name','status')->orderBy('created_at','DESC')->paginate(40);
+        return  $allUser;
+    }
+
 }

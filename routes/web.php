@@ -48,13 +48,23 @@ Route::group(['middleware' => 'admin'], function () {
 //Route::get('/admin/request-clients/{id}/edit','CallController@edit');
     Route::PUT('/admin/request-clients/{id}','CallController@update');
     Route::DELETE('/admin/request-clients/{id}','CallController@destroy');
+
+    //-----------------Users info -----------------------------
+    Route::get('/admin/user','UserController@index');
+    /*
+     Route::get('/admin/user/{id}','UserController@show');
+     Route::get('/admin/user/{id}/edit','UserController@edit');
+     Route::PUT('/admin/user/{id}','UserController@update');
+     Route::DELETE('/admin/user/{id}','UserController@deatroy');
+
+    */
+
+
 });
 
 
 Route::get('/','NewsController@index');
 Route::get('/news/{alias}','NewsController@show');
-
-
 
 //-------------------------------------------------------------
 

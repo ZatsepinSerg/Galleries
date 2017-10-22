@@ -16,7 +16,7 @@ class CheckModerator
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->role == 'moderator') {
+        if (Auth::user()->role == 'moderator' && Auth::user()->status == 1) {
             return $next($request);
         }
         
